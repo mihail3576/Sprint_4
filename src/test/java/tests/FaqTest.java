@@ -1,11 +1,8 @@
 package tests;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import pageobjects.MainPage;
 
 import java.util.Arrays;
@@ -14,9 +11,7 @@ import java.util.Collection;
 import static org.junit.Assert.*;
 
 @RunWith(Parameterized.class)
-public class FaqTest {
-    private WebDriver driver;
-
+public class FaqTest extends BaseTest {
     private final int questionIndex;
     private final String expectedAnswerText;
 
@@ -25,8 +20,8 @@ public class FaqTest {
         this.expectedAnswerText = expectedAnswerText;
     }
 
-    @Parameterized.Parameters()
-    public static Collection<Object[]> getQuestionIndices() {
+    @Parameterized.Parameters(name = "Тестовые данные: {0} {1}")
+    public static Collection<Object[]> testQuestionIndices() {
         return Arrays.asList(new Object[][]{
                 {1, "Сутки — 400 рублей. Оплата курьеру — наличными или картой."},
                 {2, "Пока что у нас так: один заказ — один самокат. Если хотите покататься с друзьями, можете просто сделать несколько заказов — один за другим."},
@@ -39,13 +34,6 @@ public class FaqTest {
         });
     }
 
-    @Before
-    public void setUp() {
-        WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
-        driver.get("https://qa-scooter.praktikum-services.ru/");
-    }
-
     @Test
     public void testEachQuestionShowsAnswer() {
         MainPage mainPage = new MainPage(driver);
@@ -54,10 +42,5 @@ public class FaqTest {
         String answer = mainPage.getAnswerTextByIndex(questionIndex);
 
         assertEquals("Ответ не совпадает с ожидаемым", expectedAnswerText, answer.trim());
-    }
-
-    @After
-    public void tearDown() {
-        driver.quit();
     }
 }

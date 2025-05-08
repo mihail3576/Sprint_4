@@ -8,6 +8,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class MainPage {
+    public static String url = "https://qa-scooter.praktikum-services.ru/";
+
     private final WebDriver driver;
 
     // локатор верхней кнопки заказать

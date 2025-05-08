@@ -1,11 +1,10 @@
 package tests;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
+
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import pageobjects.MainPage;
 import pageobjects.OrderPage;
 
@@ -15,9 +14,7 @@ import java.util.Collection;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(Parameterized.class)
-public class OrderTest {
-    private WebDriver driver;
-
+public class OrderTest extends BaseTest {
     private final String firstName;
     private final String lastName;
     private final String address;
@@ -34,19 +31,12 @@ public class OrderTest {
         this.comment = comment;
     }
 
-    @Parameterized.Parameters
+    @Parameterized.Parameters(name = "Тестовые данные: {0} {1}")
     public static Collection<Object[]> testData() {
         return Arrays.asList(new Object[][]{
                 {"Иван", "Иванов", "Тест 1", "89991234567", "07.05.2025", "Позвонить"},
                 {"Ольга", "Ольговна", "Тест 2", "89001112233", "08.05.2025", "Позвонить"}
         });
-    }
-
-    @Before
-    public void setUp() {
-        WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
-        driver.get("https://qa-scooter.praktikum-services.ru/");
     }
 
     @Test
@@ -71,10 +61,5 @@ public class OrderTest {
         orderPage.fillSecondForm(date, comment);
 
         assertTrue(orderPage.isOrderConfirmed());
-    }
-
-    @After
-    public void tearDown() {
-            driver.quit();
     }
 }
